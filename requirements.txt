@@ -1,0 +1,9 @@
+influxdb-client
+python-dotenv
+djangorestframework
+markdown
+django-filter
+urllib3
+django
+gunicorn
+psycopg2-binary
