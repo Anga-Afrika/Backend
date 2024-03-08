@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
+
 
 load_dotenv()
 
@@ -29,7 +31,7 @@ SECRET_KEY = "django-insecure-6-i(hm8!cdo)9!(0&y10$o5fn-r2$-t16b3_#x4xmy!p$m78^w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','localhost', '192.168.1.8',]
+ALLOWED_HOSTS = ['0.0.0.0','localhost', '192.168.1.8','127.0.0.1',]
 
 
 # Application definition
@@ -43,6 +45,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "angaBackend.apps.AngabackendConfig",
     "rest_framework",
+    'users.apps.UsersConfig',
+    'djoser',
+    'social_django', #for social authentication
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist'
 ]
 
 # REST_FRAMEWORK = {
@@ -52,6 +59,7 @@ INSTALLED_APPS = [
 # }
 
 MIDDLEWARE = [
+    'social_django.middleware.SocialAuthExceptionMiddleware', #for social authentication
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -74,6 +82,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'social_django.context_processors.backends', #for social authentication
+                'social_django.context_processors.login_redirect', #for social authentication
             ],
         },
     },
@@ -95,6 +105,14 @@ DATABASES = {
         "PORT": '',
     }
 }
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'johndoebosco@gmail.com'
+EMAIL_HOST_PASSWORD = 'ogcn etcn ruiq wkvn'
+EMAIL_USE_TLS = True
 
 
 # Password validation
@@ -146,3 +164,66 @@ INFLUX_TOKEN = os.environ.get('INFLUX_TOKEN')
 INFLUX_ORG = os.getenv('INFLUX_ORG')
 INFLUX_BUCKET = 'SensorData'
 INFLUX_BUCKET_AUTH = 'SensorData_Devices'
+
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2', #for google social authentication
+    'django.contrib.auth.backends.ModelBackend', #regular auth backend
+)
+
+# Configure DRF SimpleJWT
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+# Configure DRF SimpleJWT settings
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+    'AUTH_TOKEN_CLASSES': (
+        'rest_framework_simplejwt.tokens.AccessToken',  # To access the API using access tokens
+        ),
+
+}
+
+
+
+
+# Djoser settings
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+    'SET_PASSWORD_RETYPE': True,
+    'SET_USERNAME_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'username/reset/confirm/{uid}/ {token}',
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy', #for social authentication
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://127.0.0.1:8000'], #for social authentication
+    'SERIALIZERS': {
+      'user_create': 'users.serializers.CustomUserCreateSerializer',
+        'user': 'users.serializers.CustomUserSerializer',
+        'current_user': 'users.serializers.CustomUserSerializer',
+        'user_delete' : 'djoser.serializers.UserDeleteSerializer',
+        # Add other serializers if needed
+    },
+    }
+
+# GOOGLE SOCIAL AUTHENTICATION SETTINGS
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '107737637390-s246oa71bfb4rgvnq2bqu5ag3kbbduk5.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [ 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile', 'openid' ]
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = [ 'first_name', 'last_name' ]
+
+
+AUTH_USER_MODEL = 'users.CustomUser'
