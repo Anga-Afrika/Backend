@@ -7,3 +7,7 @@ urllib3
 django
 gunicorn
 psycopg2-binary
+djangorestframework-simplejwt
+djoser
+social-auth-app-django
+psycopg2
