@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','localhost', '192.168.1.8','127.0.0.1', 'https://anga-ts1r.onrender.com']
+ALLOWED_HOSTS = ['0.0.0.0','localhost', '192.168.1.8','127.0.0.1', 'anga-ts1r.onrender.com']
 
 
 # Application definition
