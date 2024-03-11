@@ -96,13 +96,19 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# Define the DATABASES variable as an empty dictionary
-DATABASES = {}
-
+# Retrieve the DATABASE_URL from the environment variable
 database_url = os.environ.get('DATABASE_URL')
-# Update the "default" key using dj_database_url.parse
-DATABASES["default"] = dj_database_url.parse(database_url)
 
+# Parse the DATABASE_URL using dj_database_url
+db_config = dj_database_url.parse("postgres://anga_db_user:aFLqynBAG2fSY9Zsedvf6DKAADigdTZr@dpg-cnnjfn7109ks73cu3at0-a/anga_db")
+
+# Add SSL disable option to the OPTIONS dictionary
+db_config['OPTIONS'] = {'sslmode': 'require'}
+
+# Update the "default" key in DATABASES
+DATABASES = {
+    'default': db_config,
+}
 
 # DATABASES = {
 #     "default": {
