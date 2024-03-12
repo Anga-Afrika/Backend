@@ -112,6 +112,7 @@ def get_measurements(query):
         token = settings.INFLUX_TOKEN+("=="),
         org = settings.INFLUX_ORG
     )
+    print(f"token::::{influxdb_client.token}")
     query_api = QueryApi(influxdb_client)
     
     try:
