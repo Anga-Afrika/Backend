@@ -19,7 +19,7 @@ def create_authorization(device_id) -> Authorization:
 
     influxdb_client = InfluxDBClient(
         url = settings.INFLUX_URL,
-        token = settings.INFLUX_TOKEN+("=="),
+        token = settings.INFLUX_TOKEN,
         org = settings.INFLUX_ORG
     )
 
@@ -42,25 +42,22 @@ def create_authorization(device_id) -> Authorization:
 def create_device(device_id = None):
     influxdb_client = InfluxDBClient(
         url = settings.INFLUX_URL,
-        token = os.getenv('INFLUX_TOKEN') + "==",
+        token = os.getenv('INFLUX_TOKEN'),
         org = settings.INFLUX_ORG
     )
 
     if device_id is None:
         device_id = str(uuid4())
     
-    print(f"Device ID:::::::::::::::::::::::::{device_id}")
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
     point = Point('deviceauth') \
         .tag('deviceId', device_id) \
         .field('key', f'fake_auth_id_{device_id}') \
         .field('token', f'fake_auth_token_{device_id}')
     
-    print(f"Point:::::::::::::::::::::::::{point.to_line_protocol()}")
     
     client_response = write_api.write(bucket=settings.INFLUX_BUCKET_AUTH, record=point)
 
-    print(f"Client Response:::::::::::::::::::::::::{client_response}")
     #write() returns None on success
     if client_response is None:
         return device_id
@@ -70,12 +67,9 @@ def create_device(device_id = None):
 def get_device(device_id = None):
     influxdb_client = InfluxDBClient(
         url = settings.INFLUX_URL,
-        token = os.getenv('INFLUX_TOKEN') + "==",
+        token = os.getenv('INFLUX_TOKEN'),
         org = settings.INFLUX_ORG
-    )
-
-    print(f"Device ID:::::::::::::::::::::::::{device_id}")
-    
+    )    
 
     query_api = QueryApi(influxdb_client)
     device_filter = ''
@@ -106,10 +100,9 @@ def get_device(device_id = None):
     return result
 
 def get_measurements(query):
-    # print(f"Query:::::::::::::::::::::::::{query}")
     influxdb_client = InfluxDBClient(
         url = settings.INFLUX_URL,
-        token = settings.INFLUX_TOKEN+("=="),
+        token = settings.INFLUX_TOKEN,
         org = settings.INFLUX_ORG
     )
     print(f"token::::{influxdb_client.token}")
