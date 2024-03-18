@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'djoser',
     'social_django', #for social authentication
     'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist'
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',  # Enable CORS headers
 ]
 
 # REST_FRAMEWORK = {
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware', #for social authentication
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -184,7 +186,7 @@ REST_FRAMEWORK = {
 # Configure DRF SimpleJWT settings
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
     'AUTH_TOKEN_CLASSES': (
         'rest_framework_simplejwt.tokens.AccessToken',  # To access the API using access tokens
@@ -192,7 +194,29 @@ SIMPLE_JWT = {
 
 }
 
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8100",   # frontend url
+    # Add more origins if needed
+]
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
+CORS_ALLOW_HEADERS = [
+    'Accept',
+    'Accept-Encoding',
+    'Authorization',
+    'Content-Type',
+    'Origin',
+    'Referer',
+    'User-Agent',
+]
 
 
 # Djoser settings
