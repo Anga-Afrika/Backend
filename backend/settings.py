@@ -102,7 +102,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 database_url = os.environ.get('DATABASE_URL')
 
 # Parse the DATABASE_URL using dj_database_url
-db_config = dj_database_url.parse("postgres://anga_db_user:aFLqynBAG2fSY9Zsedvf6DKAADigdTZr@dpg-cnnjfn7109ks73cu3at0-a/anga_db")
+db_config = dj_database_url.parse("postgres://ghala_user:NAsQ5zaqowoiiRvUZhCNHJQG4fyD8FDU@dpg-cnsongta73kc73b62r70-a/ghala")
 
 # Add SSL disable option to the OPTIONS dictionary
 db_config['OPTIONS'] = {'sslmode': 'require'}
@@ -209,7 +209,7 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "*",   # all urls allowed
+    'http://127.0.0.0.1',   # all urls allowed
 ]
 
 CORS_ALLOW_CREDENTIALS = True
