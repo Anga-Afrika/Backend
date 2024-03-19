@@ -195,10 +195,11 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8100",   # frontend url
-    # Add more origins if needed
+    "*",   # all urls allowed
 ]
+
 CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
