@@ -208,10 +208,12 @@ SIMPLE_JWT = {
 
 }
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8201'
-    '*',# all urls allowed
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:8201'
+#     '*',# all urls allowed
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -232,7 +234,15 @@ CORS_ALLOW_HEADERS = [
     'Origin',
     'Referer',
     'User-Agent',
+    'Access-Control-Request-Method', 
+    'Access-Control-Request-Headers',  # Include this header
+    'Access-Control-Allow-Origin',  # Include this header
+    'Access-Control-Allow-Credentials',  # Include this header
+    'Access-Control-Allow-Methods',  # Include this header
+    'Access-Control-Allow-Headers',  # Include this header
 ]
+
+
 
 
 # Djoser settings
