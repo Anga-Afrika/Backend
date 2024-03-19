@@ -88,7 +88,7 @@ def get_weekly_humidity_average(request):
     # Return the mean as JSON
     return JsonResponse({"mean_humidity": mean_humidity})
 
-@api_view(['PATCH', 'POST'])
+@api_view(['PATCH', 'POST','GET'])
 def threshold_api(request):
     try:
         threshold = Threshold.objects.first()
@@ -108,6 +108,9 @@ def threshold_api(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'GET':
+        serializer = ThresholdSerializer(threshold)
+        return Response(serializer.data, status=status.HTTP_200_OK)    
 
 @api_view(['GET'])
 def get_weekly_humidity_extremes(request):
