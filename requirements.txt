@@ -4,7 +4,7 @@ djangorestframework
 markdown
 django-filter
 urllib3
-django
+django==4.2.11
 gunicorn
 psycopg2-binary
 djangorestframework-simplejwt

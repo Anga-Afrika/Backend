@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Compartment</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Add Compartment</h1>
+    <form action="{% url 'create_compartment' %}" method="post">
+        {% csrf_token %}
+        <label for="warehouse_name">Warehouse Name:</label>
+        <input type="text" id="warehouse_name" name="warehouse_name" required><br>
+        <label for="compartment_name">Compartment Name:</label>
+        <input type="text" id="compartment_name" name="compartment_name" required><br>
+        <button type="submit">Add Compartment</button>
+    </form>
+</body>
+</html>
