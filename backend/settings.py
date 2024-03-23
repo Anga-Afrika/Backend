@@ -49,8 +49,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'djoser',
     'social_django', #for social authentication
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
+    # 'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt.token_blacklist',
     'corsheaders',  # Enable CORS headers
 ]
 
@@ -187,26 +187,26 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', #regular auth backend
 )
 
-# Configure DRF SimpleJWT
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
-}
+# # Configure DRF SimpleJWT
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.IsAuthenticated',
+#     ],
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     ],
+# }
 
-# Configure DRF SimpleJWT settings
-SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
-    'AUTH_TOKEN_CLASSES': (
-        'rest_framework_simplejwt.tokens.AccessToken',  # To access the API using access tokens
-        ),
+# # Configure DRF SimpleJWT settings
+# SIMPLE_JWT = {
+#     'AUTH_HEADER_TYPES': ('JWT',),
+#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+#     'AUTH_TOKEN_CLASSES': (
+#         'rest_framework_simplejwt.tokens.AccessToken',  # To access the API using access tokens
+#         ),
 
-}
+# }
 
 # CORS_ALLOWED_ORIGINS = [
 #     'http://localhost:8201'
