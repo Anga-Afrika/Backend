@@ -15,6 +15,7 @@ import os
 from dotenv import load_dotenv
 from datetime import timedelta
 
+import dj_database_url
 
 load_dotenv()
 
@@ -26,12 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-6-i(hm8!cdo)9!(0&y10$o5fn-r2$-t16b3_#x4xmy!p$m78^w"
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','localhost', '192.168.1.8','127.0.0.1',]
+ALLOWED_HOSTS = ['0.0.0.0','localhost', '192.168.1.8','127.0.0.1', 'anga-ts1r.onrender.com']
 
 
 # Application definition
@@ -48,9 +49,9 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'djoser',
     'social_django', #for social authentication
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist' ,
-    'inventory.apps.InventoryConfig' ,
+    # 'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',  # Enable CORS headers
 ]
 
 # REST_FRAMEWORK = {
@@ -60,10 +61,11 @@ INSTALLED_APPS = [
 # }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware', #for social authentication
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -96,18 +98,31 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# Retrieve the DATABASE_URL from the environment variable
+database_url = os.environ.get('DATABASE_URL')
+
+# Parse the DATABASE_URL using dj_database_url
+db_config = dj_database_url.parse("postgres://ghala_user:NAsQ5zaqowoiiRvUZhCNHJQG4fyD8FDU@dpg-cnsongta73kc73b62r70-a/ghala")
+
+# Add SSL disable option to the OPTIONS dictionary
+db_config['OPTIONS'] = {'sslmode': 'require'}
+
+# Update the "default" key in DATABASES
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "1234",
-        "HOST": "localhost",
-        "PORT": '5432',
-    }
+    'default': db_config,
 }
 
-# Email
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": os.getenv('DB_NAME'),
+#         "USER": os.getenv('DB_USER'),
+#         "PASSWORD": os.getenv('DB_PWD'),
+#         "HOST": os.getenv('DB_HOST'),
+#         "PORT": '',
+#     }
+# }
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -172,26 +187,60 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', #regular auth backend
 )
 
-# Configure DRF SimpleJWT
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
-}
+# # Configure DRF SimpleJWT
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.IsAuthenticated',
+#     ],
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     ],
+# }
 
-# Configure DRF SimpleJWT settings
-SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
-    'AUTH_TOKEN_CLASSES': (
-        'rest_framework_simplejwt.tokens.AccessToken',  # To access the API using access tokens
-        ),
+# # Configure DRF SimpleJWT settings
+# SIMPLE_JWT = {
+#     'AUTH_HEADER_TYPES': ('JWT',),
+#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+#     'AUTH_TOKEN_CLASSES': (
+#         'rest_framework_simplejwt.tokens.AccessToken',  # To access the API using access tokens
+#         ),
 
-}
+# }
+
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:8201'
+#     '*',# all urls allowed
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'Accept',
+    'Accept-Encoding',
+    'Authorization',
+    'Content-Type',
+    'Origin',
+    'Referer',
+    'User-Agent',
+    'Access-Control-Request-Method', 
+    'Access-Control-Request-Headers',  # Include this header
+    'Access-Control-Allow-Origin',  # Include this header
+    'Access-Control-Allow-Credentials',  # Include this header
+    'Access-Control-Allow-Methods',  # Include this header
+    'Access-Control-Allow-Headers',  # Include this header
+]
 
 
 
