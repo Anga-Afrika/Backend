@@ -111,16 +111,16 @@ db_config = dj_database_url.parse("postgres://ghala_user:NAsQ5zaqowoiiRvUZhCNHJQ
 db_config['OPTIONS'] = {'sslmode': 'require'}
 
 # Update the "default" key in DATABASES
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "1234",
-        "HOST": ,
-        "PORT": '',
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "postgres",
+#         "USER": "postgres",
+#         "PASSWORD": "1234",
+#         "HOST": ,
+#         "PORT": '',
+#     }
+# }
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
