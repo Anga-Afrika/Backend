@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'djoser',
     'social_django', #for social authentication
     'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist'
+    'rest_framework_simplejwt.token_blacklist',
+    'inventory.apps.InventoryConfig',
     'corsheaders',  # Enable CORS headers
     'rest_framework_simplejwt.token_blacklist',
     'inventory.apps.InventoryConfig',
