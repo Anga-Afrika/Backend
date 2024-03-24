@@ -110,6 +110,11 @@ db_config = dj_database_url.parse("postgres://ghala_user:NAsQ5zaqowoiiRvUZhCNHJQ
 db_config['OPTIONS'] = {'sslmode': 'require'}
 
 # Update the "default" key in DATABASES
+DATABASES = {
+    'default': db_config,
+}
+
+# Update the "default" key in DATABASES
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql_psycopg2",
