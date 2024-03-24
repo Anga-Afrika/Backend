@@ -9,6 +9,13 @@ from angaBackend.models import Threshold
 from angaBackend.serializers import ThresholdSerializer
 from .devices import get_device, create_device, get_measurements
 from django.conf import settings
+import os
+from twilio.rest import Client
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 
 
 # Create your views here.
@@ -65,13 +72,11 @@ def get_data(request):
 # Function to send Twilio message
 def send_twilio_message(message):
     # Your Twilio credentials
-    account_sid = 'ACc3302715d7eb7b3742b84f90165cb131'
-    auth_token = 'afcce87a9581ddda5ae856f410ea73ee'
-    twilio_number = '+16562193403'
+    account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+    auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+    twilio_number = os.getenv('TWILIO_PHONE_NUMBER')
+    recipient_number = os.getenv('RECIPIENT_PHONE_NUMBER')
     
-    # Recipient's phone number
-    recipient_number = '+254792386531'
-
     # Initialize Twilio client
     client = Client(account_sid, auth_token)
 
@@ -81,6 +86,7 @@ def send_twilio_message(message):
         from_=twilio_number, 
         to=recipient_number
     )
+
 
 @api_view(['GET'])
 def get_weekly_temp_average(request):
