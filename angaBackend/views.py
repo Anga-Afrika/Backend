@@ -9,6 +9,13 @@ from angaBackend.models import Threshold
 from angaBackend.serializers import ThresholdSerializer
 from .devices import get_device, create_device, get_measurements
 from django.conf import settings
+import os
+from twilio.rest import Client
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 
 
 # Create your views here.
@@ -37,10 +44,49 @@ def create_devices(request, device_id = None):
 
 @api_view(['POST'])
 def get_data(request):
-    #call the get_measurements function
+    # Call the get_measurements function
     query = request.data.get('query')
     device_data = get_measurements(query)
+
+    # Check if thresholds are exceeded
+    try:
+        threshold = Threshold.objects.first()
+    except Threshold.DoesNotExist:
+        # If Threshold object doesn't exist, return device data without checking thresholds
+        return JsonResponse(device_data, safe=False)
+
+    temperature_threshold = threshold.temperature_threshold
+    humidity_threshold = threshold.humidity_threshold
+
+    temperature = device_data.get('temperature')
+    humidity = device_data.get('humidity')
+
+    if temperature is not None and temperature > temperature_threshold:
+        send_twilio_message("Temperature threshold exceeded!")
+    if humidity is not None and humidity > humidity_threshold:
+        send_twilio_message("Humidity threshold exceeded!")
+
     return JsonResponse(device_data, safe=False)
+
+
+# Function to send Twilio message
+def send_twilio_message(message):
+    # Your Twilio credentials
+    account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+    auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+    twilio_number = os.getenv('TWILIO_PHONE_NUMBER')
+    recipient_number = os.getenv('RECIPIENT_PHONE_NUMBER')
+    
+    # Initialize Twilio client
+    client = Client(account_sid, auth_token)
+
+    # Send message
+    message = client.messages.create(
+        body=message, 
+        from_=twilio_number, 
+        to=recipient_number
+    )
+
 
 @api_view(['GET'])
 def get_weekly_temp_average(request):
