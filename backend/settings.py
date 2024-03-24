@@ -53,8 +53,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'inventory.apps.InventoryConfig',
     'corsheaders',  # Enable CORS headers
-    'rest_framework_simplejwt.token_blacklist',
-    'inventory.apps.InventoryConfig',
+    
 ]
 
 # REST_FRAMEWORK = {
