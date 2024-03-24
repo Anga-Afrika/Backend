@@ -49,9 +49,12 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'djoser',
     'social_django', #for social authentication
-    # 'rest_framework_simplejwt',
-    # 'rest_framework_simplejwt.token_blacklist',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'inventory.apps.InventoryConfig',
     'corsheaders',  # Enable CORS headers
+    'rest_framework_simplejwt.token_blacklist',
+    'inventory.apps.InventoryConfig',
 ]
 
 # REST_FRAMEWORK = {
@@ -109,20 +112,17 @@ db_config['OPTIONS'] = {'sslmode': 'require'}
 
 # Update the "default" key in DATABASES
 DATABASES = {
-    'default': db_config,
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "1234",
+        "HOST": ,
+        "PORT": '',
+    }
 }
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": os.getenv('DB_NAME'),
-#         "USER": os.getenv('DB_USER'),
-#         "PASSWORD": os.getenv('DB_PWD'),
-#         "HOST": os.getenv('DB_HOST'),
-#         "PORT": '',
-#     }
-# }
-
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

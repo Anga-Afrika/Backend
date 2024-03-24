@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Compartment Detail</title>
+</head>
+<body>
+    <h2>Compartment Detail</h2>
+    <p>Compartment Name: {{ compartment.name }}</p>
+    <p>Warehouse Name: {{ compartment.warehouse.name }}</p>
+    
+    <h3>Sensors:</h3>
+    <ul>
+        {% for sensor in compartment.sensor_set.all %}
+            <li>{{ sensor.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'add_sensor' compartment_id=compartment.id %}">Add Sensor</a>
+</body>
+</html>

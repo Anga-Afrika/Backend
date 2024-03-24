@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Warehouse List</title>
+</head>
+<body>
+    <h1>Warehouses</h1>
+    <ul>
+        {% for warehouse in warehouses %}
+        <li>{{ warehouse.name }} - {{ warehouse.location }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
