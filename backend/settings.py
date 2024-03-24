@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist'
     'corsheaders',  # Enable CORS headers
+    'rest_framework_simplejwt.token_blacklist',
+    'inventory.apps.InventoryConfig',
 ]
 
 # REST_FRAMEWORK = {
@@ -111,10 +113,10 @@ db_config['OPTIONS'] = {'sslmode': 'require'}
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.getenv('DB_NAME'),
-        "USER": os.getenv('DB_USER'),
-        "PASSWORD": os.getenv('DB_PWD'),
-        "HOST": os.getenv('DB_HOST'),
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "1234",
+        "HOST": ,
         "PORT": '',
     }
 }
