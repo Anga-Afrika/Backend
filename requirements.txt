@@ -3,7 +3,6 @@ python-dotenv
 markdown
 django-filter
 urllib3
-django==4.2.11
 gunicorn
 dj-database-url
 asgiref==3.7.2
