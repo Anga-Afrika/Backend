@@ -48,3 +48,4 @@ djoser
 social-auth-app-django
 psycopg2
 django-cors-headers
+twilio
